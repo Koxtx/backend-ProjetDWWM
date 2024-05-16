@@ -10,7 +10,7 @@ const {
 } = require("../email/email");
 
 const createTokenEmail = (email) => {
-  return jwt.sign({ email }, process.env.SECRET, { expiresIn: "60s" });
+  return jwt.sign({ email }, process.env.SECRET, { expiresIn: "3600s" });
 };
 
 const signupUser = async (req, res) => {
