@@ -3,14 +3,14 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: "corentin.lavarde@gmail.com",
-    pass: "baknwfnjirbyjibl",
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
 const sendConfirmationEmail = async (email, token) => {
   const mailOptions = {
-    from: "corentin.lavarde@gmail.com",
+    from: process.env.EMAIL_USER,
     to: email,
     subject: "Confirmation d'inscription",
     html: `
@@ -24,7 +24,7 @@ const sendConfirmationEmail = async (email, token) => {
 
 const sendValiditionAccount = async (email) => {
   const mailOptions = {
-    from: "corentin.lavarde@gmail.com",
+    from: process.env.EMAIL_USER,
     to: email,
     subject: "inscription validée",
     html: `
@@ -37,7 +37,7 @@ const sendValiditionAccount = async (email) => {
 
 const sendInvalidEmailToken = async (email) => {
   const mailOptions = {
-    from: "corentin.lavarde@gmail.com",
+    from: process.env.EMAIL_USER,
     to: email,
     subject: "Problème lors de la validation",
     html: `
