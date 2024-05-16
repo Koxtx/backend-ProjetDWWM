@@ -10,7 +10,7 @@ const {
 } = require("../email/email");
 
 const createTokenEmail = (email) => {
-  return jwt.sign({ email }, "zlkzzam", { expiresIn: "60s" });
+  return jwt.sign({ email }, process.env.SECRET, { expiresIn: "60s" });
 };
 
 const signupUser = async (req, res) => {
@@ -47,7 +47,7 @@ const signupUser = async (req, res) => {
 const verifyMail = async (req, res) => {
   const token = req.params.token;
   const isTokenNull = await User.findOne({ token: token });
-  const decoded = jwt.verify(token, "zlkzzam", {
+  const decoded = jwt.verify(token, process.env.SECRET, {
     ignoreExpiration: true,
   });
   console.log(decoded.exp * 1000);
