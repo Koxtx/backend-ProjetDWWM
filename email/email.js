@@ -48,8 +48,32 @@ const sendInvalidEmailToken = async (email) => {
   await transporter.sendMail(mailOptions);
 };
 
+const sendPasswordForget = async (email, token) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "reset mot de passe",
+    html: `<p>cliquer sur le lien pour reset votre mot de passe : <a href="http://localhost:5173/resetpassword/${token}">Reset mot de passe</a></p>`,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
+const sendPasswordReset = async (email) => {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "reset ",
+    html: `<p>Vous avez reset votre mot de passe: <a href="http://localhost:5173/login">Reset mot de passe</a></p>`,
+  };
+
+  await transporter.sendMail(mailOptions);
+};
+
 module.exports = {
   sendConfirmationEmail,
   sendValiditionAccount,
   sendInvalidEmailToken,
+  sendPasswordForget,
+  sendPasswordReset,
 };

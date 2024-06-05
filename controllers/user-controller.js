@@ -7,10 +7,17 @@ const {
   sendConfirmationEmail,
   sendValiditionAccount,
   sendInvalidEmailToken,
+  sendPasswordForget,
 } = require("../email/email");
 
 const createTokenEmail = (email) => {
   return jwt.sign({ email }, process.env.SECRET, { expiresIn: "3600s" });
+};
+const createTokenLogin = (_id) => {
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "60s" });
+};
+const createTokenPassword = (email) => {
+  return jwt.sign({ email }, process.env.SECRET, { expiresIn: "60s" });
 };
 
 const signupUser = async (req, res) => {
@@ -94,4 +101,57 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, verifyMail, loginUser };
+const passwordUsers = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      const token = createTokenPassword(email);
+      await sendPasswordForget(email, token);
+
+      res.status(200).json({
+        message: "Veuillez consulter votre boite mail",
+      });
+    } else {
+      res.status(400).json({
+        message: "Email n'existe pas",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    console.log(user);
+    if (user) {
+      const salt = await bcrypt.genSalt(10);
+      const hashPassWord = await bcrypt.hash(password, salt);
+      await User.findOneAndUpdate(
+        { email },
+        { password: hashPassWord, token: null }
+      );
+      console.log("user saved");
+      res.status(200).json({
+        message: "mot de passe modifié",
+      });
+    } else {
+      res.status(400).json({
+        message: "erreur",
+      });
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  signupUser,
+  verifyMail,
+  loginUser,
+  passwordUsers,
+  resetPassword,
+};
