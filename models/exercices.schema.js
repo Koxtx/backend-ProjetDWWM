@@ -6,6 +6,7 @@ const exercicesSchema = schema({
   bodyPart: String,
   equipmentUsed: String,
   image: String,
+  liked: { type: Boolean, default: false },
 });
 
 module.exports = exercicesSchema;

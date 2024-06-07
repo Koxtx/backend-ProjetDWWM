@@ -86,7 +86,8 @@ const loginUser = async (req, res) => {
       if (!user.token) {
         const match = await bcrypt.compare(password, user.password);
         if (match) {
-          res.status(200).json(user);
+          const token = createTokenLogin(user._id);
+          res.status(200).json({ user, token });
         } else {
           res.status(400).json({ message: "Mauvais Email et/ou Password" });
         }

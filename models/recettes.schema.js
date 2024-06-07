@@ -9,6 +9,7 @@ const recettesSchema = schema({
   calorie: String,
   imageLink: String,
   preparation: String,
+  liked: { type: Boolean, default: false },
 });
 
 module.exports = recettesSchema;
