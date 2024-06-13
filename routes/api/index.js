@@ -12,11 +12,11 @@ router.use("/users", apiUsers);
 router.get("/", (req, res) => {
   res.send("localhost:5000/api");
 });
-router.use("/séance", apiSeance);
+router.use("/seances", apiSeance);
 router.get("/", (req, res) => {
   res.send("localhost:5000/api");
 });
-router.use("/PR", apiPR);
+router.use("/prs", apiPR);
 router.get("/", (req, res) => {
   res.send("localhost:5000/api");
 });

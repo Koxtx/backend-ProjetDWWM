@@ -1,7 +1,14 @@
 const router = require("express").Router();
+const {
+  getPRs,
+  createPR,
+  updatePR,
+  deletePR,
+} = require("../../../controllers/pr-controller");
 
-router.get("/", (req, res) => {
-  res.send("Voila votre PR");
-});
+router.get("/", getPRs);
+router.post("/", createPR);
+router.put("/:id", updatePR);
+router.delete("/:id", deletePR);
 
 module.exports = router;

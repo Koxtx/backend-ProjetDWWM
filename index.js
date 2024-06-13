@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const PORT = process.env.PORT || 5000;
+const bodyParser = require("body-parser");
 const cors = require("cors");
 
 app.use(express.json());
@@ -11,6 +12,7 @@ app.use(
     origin: "*",
   })
 );
+app.use(bodyParser.json());
 
 const routes = require("./routes");
 app.use(routes);
