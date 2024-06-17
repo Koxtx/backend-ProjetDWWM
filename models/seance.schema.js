@@ -2,10 +2,8 @@ const mongoose = require("mongoose");
 
 const ExerciseSchema = new mongoose.Schema({
   name: String,
-  sets: Number,
-  reps: Number,
+  sets: [{ reps: Number, weight: Number }],
   rest: Number,
-  weight: Number,
 });
 
 const seanceSchema = new mongoose.Schema({
@@ -14,4 +12,4 @@ const seanceSchema = new mongoose.Schema({
   day: String,
 });
 
-module.exports = { ExerciseSchema, seanceSchema };
+module.exports = mongoose.model("Seance", seanceSchema);

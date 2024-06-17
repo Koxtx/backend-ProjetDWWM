@@ -1,10 +1,10 @@
-const { default: mongoose } = require("mongoose");
-const seanceSchema = require("../models/seance.schema");
-const schemas = mongoose.model("seances", seanceSchema);
+const mongoose = require("mongoose");
+
+const Seances = require("../models/seance.schema");
 
 const getSeances = async (req, res) => {
   try {
-    const seances = await schemas.find({});
+    const seances = await Seances.find({});
     console.log("seances");
     res.json(seances);
   } catch (error) {
@@ -13,7 +13,7 @@ const getSeances = async (req, res) => {
 };
 
 const createSeance = async (req, res) => {
-  const seance = new seanceSchema(req.body);
+  const seance = new Seances(req.body);
   try {
     const newSeance = await seance.save();
     res.status(201).json(newSeance);
@@ -24,12 +24,19 @@ const createSeance = async (req, res) => {
 
 const updateSeance = async (req, res) => {
   try {
-    const seances = await schemas.findOneAndUpdate(
-      { _id: req.body.id },
-      { $set: req.body.seance }
-    );
-    if (!seances) return res.status(404).json({ message: "Seance not found" });
-    res.json(seances);
+    const seanceId = req.body.id;
+    const updateData = {
+      name: req.body.seance.name,
+      day: req.body.seance.day,
+    };
+
+    const seance = await Seances.findOne({ _id: seanceId });
+    const response = await Seances.updateOne({ $set: updateData });
+    console.log(response);
+
+    if (!seance) return res.status(404).json({ message: "Seance not found" });
+
+    res.json(seance);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -37,7 +44,7 @@ const updateSeance = async (req, res) => {
 
 const deleteSeance = async (req, res) => {
   try {
-    const seance = await schemas.findByIdAndDelete(req.params.id);
+    const seance = await Seances.findByIdAndDelete(req.body.id);
     if (!seance) return res.status(404).json({ message: "Session not found" });
     res.json({ message: "Session deleted" });
   } catch (error) {
@@ -48,7 +55,7 @@ const deleteSeance = async (req, res) => {
 const updateExercise = async (req, res) => {
   try {
     const { seanceId, exerciseId } = req.params;
-    const seance = await schemas.findById(seanceId);
+    const seance = await Seances.findById(seanceId);
     if (!seance) return res.status(404).json({ message: "Session not found" });
 
     const exercise = seance.exercises.id(exerciseId);
@@ -66,7 +73,7 @@ const updateExercise = async (req, res) => {
 const deleteExercise = async (req, res) => {
   try {
     const { seanceId, exerciseId } = req.params;
-    const seance = await schemas.findById(seanceId);
+    const seance = await Seances.findById(seanceId);
     if (!seance) return res.status(404).json({ message: "Session not found" });
 
     const exercise = seance.exercises.id(exerciseId);
