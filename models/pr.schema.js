@@ -1,11 +1,14 @@
-const { default: mongoose } = require("mongoose");
-
-const schema = require("mongoose").Schema;
+const mongoose = require("mongoose");
 
 const PRSchema = new mongoose.Schema({
-  exerciseName: String,
-  bestReps: Number,
-  bestWeight: Number,
+  exerciseId: String,
+  sets: [
+    {
+      reps: Number,
+      weight: Number,
+      validated: Boolean,
+    },
+  ],
 });
 
-module.exports = PRSchema;
+module.exports = mongoose.model("PR", PRSchema);

@@ -28,12 +28,12 @@ const updateSeance = async (req, res) => {
     const updateData = {
       name: req.body.seance.name,
       day: req.body.seance.day,
+      exercises: req.body.seance.exercises, // Assurez-vous d'inclure les exercices mis à jour
     };
 
-    const seance = await Seances.findOne({ _id: seanceId });
-    const response = await Seances.updateOne({ $set: updateData });
-    console.log(response);
-
+    const seance = await Seances.findByIdAndUpdate(seanceId, updateData, {
+      new: true,
+    });
     if (!seance) return res.status(404).json({ message: "Seance not found" });
 
     res.json(seance);
