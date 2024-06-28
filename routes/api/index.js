@@ -5,7 +5,7 @@ const apiSeance = require("./Séance");
 const apiPR = require("./PR");
 const apiExRecette = require("./ExempleRecette");
 const apiExExos = require("./ExempleExos");
-const apiAlimentation = require("./alimentation");
+const apiAlimentation = require("./Alimentation");
 //localhost:5000/api
 
 router.use("/users", apiUsers);
