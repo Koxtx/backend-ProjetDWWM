@@ -58,19 +58,19 @@ const getLastWeekPRs = async (req, res) => {
   try {
     const exerciseIds = req.body.exerciseIds; // Assurez-vous que les IDs d'exercices sont correctement transmis depuis le frontend
 
-    // Vérifiez si les IDs d'exercices sont fournis
     if (!exerciseIds || exerciseIds.length === 0) {
       return res.status(400).json({ message: "No exercise IDs provided" });
     }
 
-    // Recherchez les performances de la semaine dernière pour les exercices spécifiés
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 7); // Définir la date de début à 7 jours dans le passé
+    const endDate = new Date();
+
     const lastWeekPRs = await PR.find({
       exerciseId: { $in: exerciseIds },
-    })
-      .sort({ bestWeight: -1, bestReps: -1 })
-      .limit(1); // Trié par le meilleur poids et le meilleur nombre de répétitions
+      date: { $gte: startDate, $lte: endDate },
+    }).sort({ "sets.weight": -1, "sets.reps": -1 });
 
-    // Vérifiez s'il y a des performances trouvées
     if (lastWeekPRs.length === 0) {
       return res
         .status(404)

@@ -1,7 +1,10 @@
 const mongoose = require("mongoose");
 
 const PRSchema = new mongoose.Schema({
-  exerciseId: String,
+  exerciseId: {
+    type: String,
+    required: true,
+  },
   sets: [
     {
       reps: Number,
@@ -9,6 +12,10 @@ const PRSchema = new mongoose.Schema({
       validated: Boolean,
     },
   ],
+  date: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("PR", PRSchema);
