@@ -8,6 +8,10 @@ const userSchema = schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     token: String,
+    favorites: {
+      exercises: [{ type: mongoose.Schema.Types.ObjectId, ref: "Exercice" }],
+      recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Recette" }],
+    },
   },
   {
     timestamps: true,

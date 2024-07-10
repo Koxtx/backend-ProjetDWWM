@@ -9,6 +9,8 @@ const {
   loginUser,
   passwordUsers,
   resetPassword,
+  addFavorite,
+  removeFavorite,
 } = require("../../../controllers/user-controller");
 
 router.post("/inscription", signupUser);
@@ -19,5 +21,8 @@ router.get("/verifyMail/:token", verifyMail);
 router.post("/forgetpassword", passwordUsers);
 
 router.post("/resetpassword", resetPassword);
+
+router.post("/addFavorite", addFavorite);
+router.post("/removeFavorite", removeFavorite);
 
 module.exports = router;

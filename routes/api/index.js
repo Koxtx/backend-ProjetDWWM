@@ -5,7 +5,6 @@ const apiSeance = require("./Séance");
 const apiPR = require("./PR");
 const apiExRecette = require("./ExempleRecette");
 const apiExExos = require("./ExempleExos");
-const apiAlimentation = require("./Alimentation");
 
 //localhost:5000/api
 
@@ -26,10 +25,6 @@ router.get("/", (req, res) => {
   res.send("localhost:5000/api");
 });
 router.use("/exercices", apiExExos);
-router.get("/", (req, res) => {
-  res.send("localhost:5000/api");
-});
-router.use("/alimentation", apiAlimentation);
 router.get("/", (req, res) => {
   res.send("localhost:5000/api");
 });

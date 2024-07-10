@@ -5,6 +5,10 @@ const PRSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  exerciseName: {
+    type: String,
+    required: true,
+  },
   sets: [
     {
       reps: Number,
