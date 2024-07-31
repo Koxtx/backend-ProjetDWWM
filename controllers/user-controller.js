@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const userSchema = require("../models/user.schema");
-const Exercice = require("../models/exercices.schema");
-const Recette = require("../models/recettes.schema");
 const User = mongoose.model("User", userSchema);
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -151,55 +149,13 @@ const resetPassword = async (req, res) => {
   }
 };
 
-const addFavorite = async (req, res) => {
-  const { userId, itemId, itemType } = req.body;
-
+const getPivateUser = async (req, res) => {
   try {
-    const user = await userSchema.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    if (itemType === "exercise") {
-      const exercise = await Exercice.findById(itemId);
-      if (!exercise) {
-        return res.status(404).json({ message: "Exercise not found" });
-      }
-      user.favorites.exercises.push(exercise._id);
-    } else if (itemType === "recipe") {
-      const recipe = await Recette.findById(itemId);
-      if (!recipe) {
-        return res.status(404).json({ message: "Recipe not found" });
-      }
-      user.favorites.recipes.push(recipe._id);
-    }
-
-    await user.save();
-    res.status(200).json({ message: "Favorite added" });
-  } catch (error) {
-    res.status(500).json({ message: "Error adding favorite", error });
-  }
-};
-
-const removeFavorite = async (req, res) => {
-  const { userId, itemId, itemType } = req.body;
-
-  try {
-    const user = await userSchema.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    if (itemType === "exercise") {
-      user.favorites.exercises.pull(itemId);
-    } else if (itemType === "recipe") {
-      user.favorites.recipes.pull(itemId);
-    }
-
-    await user.save();
-    res.status(200).json({ message: "Favorite removed" });
-  } catch (error) {
-    res.status(500).json({ message: "Error removing favorite", error });
+    const user = await User.findById(req.user._id).select("-password");
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
   }
 };
 
@@ -209,6 +165,5 @@ module.exports = {
   loginUser,
   passwordUsers,
   resetPassword,
-  addFavorite,
-  removeFavorite,
+  getPivateUser,
 };

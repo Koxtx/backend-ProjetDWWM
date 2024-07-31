@@ -1,24 +1,11 @@
 const mongoose = require("mongoose");
 
-const goalSchema = new mongoose.Schema({
-  dailyCalories: {
-    type: Number,
-    required: true,
-  },
-  dailyProtein: {
-    type: Number,
-    required: true,
-  },
-  dailyCarbs: {
-    type: Number,
-    required: true,
-  },
-  dailyFat: {
-    type: Number,
-    required: true,
-  },
+const GoalSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
+  type: { type: String, required: true },
+  target: { type: Number, required: true },
+  progress: { type: Number, default: 0 },
+  date: { type: Date, default: Date.now },
 });
 
-const Goal = mongoose.model("Goal", goalSchema);
-
-module.exports = Goal;
+module.exports = mongoose.model("goal", GoalSchema);
