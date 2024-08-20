@@ -2,6 +2,7 @@ const Nutrition = require("../models/nutrition.schema");
 
 const postNutrition = async (req, res) => {
   const { meals } = req.body;
+  console.log("Meals received:", meals); // Log pour vérifier les données reçues
   try {
     const newNutrition = new Nutrition({ user: req.user._id, meals });
     const nutrition = await newNutrition.save();
