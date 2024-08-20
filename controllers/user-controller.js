@@ -11,10 +11,10 @@ const {
 } = require("../email/email");
 
 const createTokenEmail = (email) => {
-  return jwt.sign({ email }, process.env.SECRET, { expiresIn: "3600s" });
+  return jwt.sign({ email }, process.env.SECRET, { expiresIn: "2h" });
 };
 const createTokenLogin = (_id) => {
-  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "60s" });
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "2h" });
 };
 const createTokenPassword = (email) => {
   return jwt.sign({ email }, process.env.SECRET, { expiresIn: "60s" });
