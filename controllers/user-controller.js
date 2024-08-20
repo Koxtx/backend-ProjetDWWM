@@ -159,6 +159,28 @@ const getPivateUser = async (req, res) => {
   }
 };
 
+const updateUserProfile = async (req, res) => {
+  const { username, email } = req.body;
+
+  try {
+    // Trouver l'utilisateur par ID et mettre à jour les informations
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { username, email },
+      { new: true } // Retourne le document après la mise à jour
+    ).select("-password"); // Ne pas retourner le mot de passe
+
+    if (!updatedUser) {
+      return res.status(404).json({ msg: "Utilisateur non trouvé" });
+    }
+
+    res.json(updatedUser);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Erreur du serveur");
+  }
+};
+
 module.exports = {
   signupUser,
   verifyMail,
@@ -166,4 +188,5 @@ module.exports = {
   passwordUsers,
   resetPassword,
   getPivateUser,
+  updateUserProfile,
 };

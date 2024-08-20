@@ -1,4 +1,14 @@
 const Goal = require("../models/goal.schema");
+const getGoals = async (req, res) => {
+  try {
+    const goals = await Goal.find({ user: req.user._id }).sort({ date: -1 });
+    res.json(goals);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+};
+
 const postGoal = async (req, res) => {
   const { type, target } = req.body;
   try {
@@ -26,4 +36,4 @@ const putGoal = async (req, res) => {
   }
 };
 
-module.exports = { postGoal, putGoal };
+module.exports = { postGoal, putGoal, getGoals };
