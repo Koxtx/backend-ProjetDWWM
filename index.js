@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const fetch = require("node-fetch");
 const Exercise = require("./models/exercice.schema");
+const Ingredient = require("./models/ingredients.schema");
 require("dotenv").config();
 
 const app = express();
@@ -48,9 +49,36 @@ async function importExercises() {
   }
 }
 
+async function importIngredients() {
+  try {
+    const response = await fetch(
+      "https://wger.de/api/v2/ingredient/?format=json"
+    );
+    const data = await response.json();
+
+    for (const ingredient of data.results) {
+      const newIngredient = new Ingredient({
+        name: ingredient.name,
+        calories: ingredient.energy, // calories
+        protein: ingredient.protein,
+        carbs: ingredient.carbohydrates,
+        fat: ingredient.fat,
+      });
+      await newIngredient.save();
+    }
+    console.log("Ingrédients importés avec succès");
+  } catch (error) {
+    console.error("Erreur lors de l'importation des ingrédients : ", error);
+  }
+}
+
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("Connection mongoDB ok"), importExercises())
+  .then(
+    () => console.log("Connection mongoDB ok"),
+    importExercises(),
+    importIngredients()
+  )
   .catch((err) => console.log(err));
 
 app.listen(PORT, () => {

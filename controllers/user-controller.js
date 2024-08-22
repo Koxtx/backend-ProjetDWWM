@@ -14,7 +14,9 @@ const createTokenEmail = (email) => {
   return jwt.sign({ email }, process.env.SECRET, { expiresIn: "2h" });
 };
 const createTokenLogin = (_id) => {
-  return jwt.sign({ user: { _id } }, process.env.SECRET, { expiresIn: "2h" });
+  return jwt.sign({ user: { _id } }, process.env.SECRET, {
+    expiresIn: "2h",
+  });
 };
 
 const createTokenPassword = (email) => {
