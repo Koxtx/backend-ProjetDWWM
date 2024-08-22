@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const routes = require("./routes");
 app.use(routes);
+
 async function importExercises() {
   try {
     const response = await fetch(
@@ -26,21 +27,20 @@ async function importExercises() {
     const data = await response.json();
 
     for (const exercise of data.results) {
-      if (!exercise.category || !exercise.category.name) {
-        console.warn(
-          `Skipping exercise ${exercise.name}: primaryMuscle is missing`
-        );
-        continue; // Passez cet exercice s'il manque des données cruciales
-      }
+      const primaryMuscle = exercise.category
+        ? exercise.category.name
+        : "Unknown";
 
       const newExercise = new Exercise({
         name: exercise.name,
         description: exercise.description || "No description available",
-        primaryMuscle: exercise.category.name, // Assurez-vous que ce champ existe
+        primaryMuscle, // Utilisez 'Unknown' si 'category.name' est manquant
+        secondaryMuscles: exercise.muscles_secondary.map((m) => m.name),
         equipment:
           exercise.equipment.length > 0 ? exercise.equipment[0].name : "None",
         imageUrl: exercise.image,
       });
+
       await newExercise.save();
     }
     console.log("Exercices importés avec succès");
