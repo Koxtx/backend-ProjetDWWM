@@ -7,6 +7,8 @@ const apiGoal = require("./Goal");
 const apiPrivate = require("./Private");
 const apiPublic = require("./Public");
 const apiIngredients = require("./Ingredients");
+const apiProgress = require("./Progress");
+const apiRoutine = require("./Routine");
 
 //localhost:5000/api
 
@@ -21,5 +23,7 @@ router.use("/goal", apiGoal);
 router.use("/private", apiPrivate);
 router.use("/public", apiPublic);
 router.use("/ingredient", apiIngredients);
+router.use("/progress", apiProgress);
+router.use("/routine", apiRoutine);
 
 module.exports = router;
