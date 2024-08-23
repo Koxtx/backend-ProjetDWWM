@@ -78,22 +78,19 @@ const deleteExercice = async (req, res) => {
 };
 
 const getFilteredExercises = async (req, res) => {
-  const { name, category, primaryMuscle, equipment, difficulty } = req.query;
-
-  let filter = {};
-
-  if (name) filter.name = { $regex: name, $options: "i" };
-  if (category) filter.category = category;
-  if (primaryMuscle) filter.primaryMuscle = primaryMuscle;
-  if (equipment) filter.equipment = equipment;
-  if (difficulty) filter.difficulty = difficulty;
-
   try {
-    const exercises = await Exercise.find(filter);
+    const { muscle, equipment, difficulty } = req.query;
+    let filters = {};
+
+    if (muscle) filters.primaryMuscle = muscle;
+    if (equipment) filters.equipment = equipment;
+    if (difficulty) filters.difficulty = difficulty;
+
+    const exercises = await Exercise.find(filters);
     res.json(exercises);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send("Server Error");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Erreur serveur");
   }
 };
 

@@ -7,9 +7,14 @@ const ExerciseSchema = new mongoose.Schema({
   secondaryMuscles: { type: [String] },
   equipment: { type: String },
   category: { type: String }, // Ajoutez la catégorie de l'exercice
-  difficulty: { type: String }, // Ex: 'Beginner', 'Intermediate', 'Advanced'
+  difficulty: {
+    type: String,
+    enum: ["Débutant", "Intermédiaire", "Avancé"],
+    default: "Intermédiaire",
+  },
   imageUrl: { type: String },
-  videoUrl: { type: String }, // Lien vers une vidéo de démonstration
+  videoUrl: { type: String },
+  duration: { type: Number }, // Lien vers une vidéo de démonstration
   date: { type: Date, default: Date.now },
 });
 
