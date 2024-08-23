@@ -77,4 +77,30 @@ const deleteExercice = async (req, res) => {
   }
 };
 
-module.exports = { postExercice, putExercice, deleteExercice, getExercice };
+const getFilteredExercises = async (req, res) => {
+  const { name, category, primaryMuscle, equipment, difficulty } = req.query;
+
+  let filter = {};
+
+  if (name) filter.name = { $regex: name, $options: "i" };
+  if (category) filter.category = category;
+  if (primaryMuscle) filter.primaryMuscle = primaryMuscle;
+  if (equipment) filter.equipment = equipment;
+  if (difficulty) filter.difficulty = difficulty;
+
+  try {
+    const exercises = await Exercise.find(filter);
+    res.json(exercises);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+module.exports = {
+  postExercice,
+  putExercice,
+  deleteExercice,
+  getExercice,
+  getFilteredExercises,
+};

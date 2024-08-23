@@ -9,7 +9,6 @@ module.exports = function (req, res, next) {
   try {
     const decoded = jwt.verify(token, process.env.SECRET);
     console.log("Decoded token:", decoded);
-    // Vérifiez ici si la structure du token est correcte
     if (decoded && decoded.user && decoded.user._id) {
       req.user = decoded.user; // Définir req.user correctement
       next();

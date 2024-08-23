@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const express = require("express");
 
 const ExerciseSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -7,7 +6,10 @@ const ExerciseSchema = new mongoose.Schema({
   primaryMuscle: { type: String, default: "Unknown" },
   secondaryMuscles: { type: [String] },
   equipment: { type: String },
+  category: { type: String }, // Ajoutez la catégorie de l'exercice
+  difficulty: { type: String }, // Ex: 'Beginner', 'Intermediate', 'Advanced'
   imageUrl: { type: String },
+  videoUrl: { type: String }, // Lien vers une vidéo de démonstration
   date: { type: Date, default: Date.now },
 });
 

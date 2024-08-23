@@ -22,13 +22,14 @@ const postWorkout = async (req, res) => {
 
 const getWorkout = async (req, res) => {
   try {
+    console.log("User ID from token:", req.user._id); // Ajoutez ceci pour vérifier l'ID utilisateur
     const workouts = await Workout.find({ user: req.user._id }).sort({
       date: -1,
     });
     res.json(workouts); // Renvoie les résultats en JSON
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ msg: "Server Error" }); // Assurez-vous que cette ligne utilise res.json()
+    res.status(500).json({ msg: "Server Error" });
   }
 };
 
