@@ -1,4 +1,5 @@
 const Goal = require("../models/goal.schema");
+
 const getGoals = async (req, res) => {
   try {
     const goals = await Goal.find({ user: req.user._id }).sort({ date: -1 });
@@ -10,9 +11,16 @@ const getGoals = async (req, res) => {
 };
 
 const postGoal = async (req, res) => {
-  const { type, target } = req.body;
+  const { type, targetType, target, reps, weight } = req.body; // Récupère les nouveaux champs
   try {
-    const newGoal = new Goal({ user: req.user._id, type, target });
+    const newGoal = new Goal({
+      user: req.user._id,
+      type,
+      targetType,
+      target: targetType === "time" || targetType === "weight" ? target : undefined,
+      reps: targetType === "repetitions" || targetType === "repsWithWeight" ? reps : undefined,
+      weight: targetType === "weight" || targetType === "repsWithWeight" ? weight : undefined,
+    });
     const goal = await newGoal.save();
     res.json(goal);
   } catch (err) {
