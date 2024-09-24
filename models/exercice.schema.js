@@ -6,7 +6,7 @@ const ExerciseSchema = new mongoose.Schema({
   primaryMuscle: { type: String, default: "Unknown" },
   secondaryMuscles: { type: [String] },
   equipment: { type: String },
-  category: { type: String }, // Ajoutez la catégorie de l'exercice
+  category: { type: String },
   difficulty: {
     type: String,
     enum: ["Débutant", "Intermédiaire", "Avancé"],
@@ -14,7 +14,7 @@ const ExerciseSchema = new mongoose.Schema({
   },
   imageUrl: { type: String },
   videoUrl: { type: String },
-  duration: { type: Number }, // Lien vers une vidéo de démonstration
+  duration: { type: Number },
   date: { type: Date, default: Date.now },
 });
 

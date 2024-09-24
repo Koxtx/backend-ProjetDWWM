@@ -19,8 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const routes = require("./routes");
 app.use(routes);
 
-
-
 async function importExercises() {
   try {
     let url = "https://wger.de/api/v2/exercise/?format=json&language=2";
@@ -38,7 +36,7 @@ async function importExercises() {
           const newExercise = new Exercise({
             name: exercise.name,
             description: exercise.description || "Description non disponible",
-            primaryMuscle,
+            primaryMuscle: exercise.primaryMuscle,
             secondaryMuscles: exercise.muscles_secondary.map((m) => m.name),
             equipment:
               exercise.equipment.length > 0
@@ -57,11 +55,6 @@ async function importExercises() {
     console.error("Erreur lors de l'importation des exercices : ", error);
   }
 }
-
-
-
-
-
 
 async function importIngredients() {
   try {
@@ -86,8 +79,6 @@ async function importIngredients() {
     console.error("Erreur lors de l'importation des ingrédients : ", error);
   }
 }
-
-
 
 mongoose
   .connect(process.env.MONGO_URI)
